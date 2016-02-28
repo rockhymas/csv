@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace Csv
 {
@@ -19,7 +15,18 @@ namespace Csv
 
         public void Execute(string[] args)
         {
-            console.Writeline(string.Format("There is no '{0}'", args[1]));
+            if (fileSystem.FileExists(args[1]))
+            {
+                using (var stream = fileSystem.OpenFile(args[1]))
+                using (var streamReader = new StreamReader(stream))
+                {
+                    console.Writeline(streamReader.ReadToEnd());
+                }
+            }
+            else
+            {
+                console.Writeline(string.Format("There is no '{0}'", args[1]));
+            }
         }
     }
 }

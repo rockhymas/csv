@@ -22,6 +22,11 @@ namespace Csv.Test
                 Given("'file.csv' contains 'the contents of file.csv'", () => Get<IFileSystem>().Stub(f => f.OpenFile(Arg<string>.Is.Equal("file.csv"))).Return(new MemoryStream(ASCIIEncoding.Default.GetBytes("the contents of file.csv")))).Verify(() =>
                     Then("output 'the contents of file.csv''", () => AssertWasCalled<IConsole>(c => c.Writeline(Arg<string>.Is.Equal("the contents of file.csv"))))));
             });
+
+            Given("the file to print is file2.csv", () => args = new[] { "file2.csv" }).Verify(() =>
+            Given("there is no file called 'file2.csv'", () => Get<IFileSystem>().Stub(f => f.FileExists(Arg<string>.Is.Equal("file2.csv"))).Return(false)).Verify(() =>
+                Then("output 'There is no 'file2.csv''", () => AssertWasCalled<IConsole>(c => c.Writeline(Arg<string>.Is.Equal("There is no 'file2.csv'"))))));
+
         }
     }
 }

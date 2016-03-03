@@ -9,15 +9,11 @@ namespace Csv
         private readonly IConsole console;
         private Dictionary<string, ICommand> commands;
 
-        public CsvController(IFileSystem fileSystem, IConsole console)
+        public CsvController(IFileSystem fileSystem, IConsole console, Dictionary<string, ICommand> commands)
         {
             this.fileSystem = fileSystem;
             this.console = console;
-            commands = new Dictionary<string, ICommand>
-            {
-                { "print", new PrintCommand() },
-                { "printrow", new PrintRowCommand() },
-            }; 
+            this.commands = commands;
         }
 
         public void Execute(string[] args)

@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Csv
 {
@@ -6,62 +9,80 @@ namespace Csv
     {
         private readonly IFileSystem fileSystem;
         private readonly IConsole console;
+        private Dictionary<string, Action<string[]>> commands;
 
         public CsvController(IFileSystem fileSystem, IConsole console)
         {
             this.fileSystem = fileSystem;
             this.console = console;
+            commands = new Dictionary<string, Action<string[]>>
+            {
+                { "print", PrintCommand },
+                { "printrow", PrintRowCommand },
+            }; 
         }
 
         public void Execute(string[] args)
         {
-            if (args[0] == "print")
+            var commandName = args[0].ToLower();
+            var commandArgs = args.Skip(1).ToArray();
+
+            if (commands.ContainsKey(commandName))
             {
-                if (fileSystem.FileExists(args[1]))
-                {
-                    using (var stream = fileSystem.OpenFile(args[1]))
-                    using (var streamReader = new StreamReader(stream))
-                    {
-                        console.Writeline(streamReader.ReadToEnd());
-                    }
-                }
-                else
-                {
-                    console.Writeline(string.Format("There is no '{0}'", args[1]));
-                }
+                var command = commands[commandName];
+                command(commandArgs);
             }
-            else if (args[0] == "printrow")
+            else
             {
-                if (fileSystem.FileExists(args[1]))
+                console.Writeline(string.Format("'{0}' is not a valid command", commandName));
+            }
+        }
+
+        private void PrintRowCommand(string[] args)
+        {
+            if (!fileSystem.FileExists(args[0]))
+            {
+                console.Writeline(string.Format("There is no '{0}'", args[0]));
+                return;
+            }
+
+            int row;
+            if (!int.TryParse(args[1], out row))
+            {
+                console.Writeline(string.Format("'{0}' is not a valid row", args[1]));
+                return;
+            }
+
+            using (var stream = fileSystem.OpenFile(args[0]))
+            using (var streamReader = new StreamReader(stream))
+            {
+                while (row > 0 && !streamReader.EndOfStream)
                 {
-                    var row = 0;
-                    if (!int.TryParse(args[2], out row))
+                    var rowContents = streamReader.ReadLine();
+                    row--;
+                    if (row == 0)
                     {
-                        console.Writeline(string.Format("'{0}' is not a valid row", args[2]));
+                        console.Writeline(rowContents);
                         return;
                     }
-
-                    using (var stream = fileSystem.OpenFile(args[1]))
-                    using (var streamReader = new StreamReader(stream))
-                    {
-                        while (row > 0 && !streamReader.EndOfStream)
-                        {
-                            var rowContents = streamReader.ReadLine();
-                            row--;
-                            if (row == 0)
-                            {
-                                console.Writeline(rowContents);
-                                return;
-                            }
-                        }
-
-                        console.Writeline(string.Format("'{0}' does not contain row {1}", args[1], args[2]));
-                    }
                 }
-                else
-                {
-                    console.Writeline(string.Format("There is no '{0}'", args[1]));
-                }
+
+                console.Writeline(string.Format("'{0}' does not contain row {1}", args[0], args[1]));
+            }
+        }
+
+        private void PrintCommand(string[] args)
+        {
+            if (!fileSystem.FileExists(args[0]))
+            {
+                console.Writeline(string.Format("There is no '{0}'", args[0]));
+                return;
+            }
+
+            using (var stream = fileSystem.OpenFile(args[0]))
+            using (var streamReader = new StreamReader(stream))
+            {
+                console.Writeline(streamReader.ReadToEnd());
             }
         }
     }

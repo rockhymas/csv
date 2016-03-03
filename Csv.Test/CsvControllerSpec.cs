@@ -13,6 +13,9 @@ namespace Csv.Test
 
             When("executing the csv controller", () => SUT.Execute(args));
 
+            Given("the command to execute is 'notacommand file.csv'", () => args = new[] {"notacommand", "file.csv"}).Verify(() =>
+                Then("output ''notacommand' is not a valid command'", () => AssertWasCalled<IConsole>(c => c.Writeline(Arg<string>.Is.Equal("'notacommand' is not a valid command")))));
+
             Given("the command to execute is 'print file.csv'", () => args = new []{ "print", "file.csv" }).Verify(() =>
             {
                 Given("there is no file called 'file.csv'", () => Get<IFileSystem>().Stub(f => f.FileExists(Arg<string>.Is.Equal("file.csv"))).Return(false)).Verify(() =>

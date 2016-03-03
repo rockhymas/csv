@@ -2,15 +2,11 @@
 
 namespace Csv
 {
-    public class PrintRowCommand : ICommand
+    public class PrintRowCommand : CommandBase
     {
-        public void Execute(string[] args, IFileSystem fileSystem, IConsole console)
+        public override void Execute(string[] args, IFileSystem fileSystem, IConsole console)
         {
-            if (!fileSystem.FileExists(args[0]))
-            {
-                console.Writeline(string.Format("There is no '{0}'", args[0]));
-                return;
-            }
+            if (!ValidateFileExists(args[0], fileSystem, console)) return;
 
             int row;
             if (!int.TryParse(args[1], out row))
@@ -26,11 +22,9 @@ namespace Csv
                 {
                     var rowContents = streamReader.ReadLine();
                     row--;
-                    if (row == 0)
-                    {
-                        console.Writeline(rowContents);
-                        return;
-                    }
+                    if (row != 0) continue;
+                    console.Writeline(rowContents);
+                    return;
                 }
 
                 console.Writeline(string.Format("'{0}' does not contain row {1}", args[0], args[1]));

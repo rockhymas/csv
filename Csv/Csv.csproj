@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandBase.cs" />
     <Compile Include="Console.cs" />
     <Compile Include="CsvController.cs" />
     <Compile Include="FileSystem.cs" />

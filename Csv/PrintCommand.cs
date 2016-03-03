@@ -2,13 +2,12 @@
 
 namespace Csv
 {
-    public class PrintCommand : ICommand
+    public class PrintCommand : CommandBase
     {
-        public void Execute(string[] args, IFileSystem fileSystem, IConsole console)
+        public override void Execute(string[] args, IFileSystem fileSystem, IConsole console)
         {
-            if (!fileSystem.FileExists(args[0]))
+            if (!ValidateFileExists(args[0], fileSystem, console))
             {
-                console.Writeline(string.Format("There is no '{0}'", args[0]));
                 return;
             }
 

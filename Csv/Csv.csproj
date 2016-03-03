@@ -43,8 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CsvController.cs" />
+    <Compile Include="ICommand.cs" />
     <Compile Include="IConsole.cs" />
     <Compile Include="IFileSystem.cs" />
+    <Compile Include="PrintCommand.cs" />
+    <Compile Include="PrintRowCommand.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

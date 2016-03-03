@@ -50,6 +50,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CsvControllerSpec.cs" />
+    <Compile Include="PrintCommandSpec.cs" />
+    <Compile Include="PrintRowCommandSpec.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

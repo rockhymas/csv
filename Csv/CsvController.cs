@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Csv
@@ -9,16 +7,16 @@ namespace Csv
     {
         private readonly IFileSystem fileSystem;
         private readonly IConsole console;
-        private Dictionary<string, Action<string[]>> commands;
+        private Dictionary<string, ICommand> commands;
 
         public CsvController(IFileSystem fileSystem, IConsole console)
         {
             this.fileSystem = fileSystem;
             this.console = console;
-            commands = new Dictionary<string, Action<string[]>>
+            commands = new Dictionary<string, ICommand>
             {
-                { "print", PrintCommand },
-                { "printrow", PrintRowCommand },
+                { "print", new PrintCommand() },
+                { "printrow", new PrintRowCommand() },
             }; 
         }
 
@@ -30,59 +28,11 @@ namespace Csv
             if (commands.ContainsKey(commandName))
             {
                 var command = commands[commandName];
-                command(commandArgs);
+                command.Execute(commandArgs, fileSystem, console);
             }
             else
             {
                 console.Writeline(string.Format("'{0}' is not a valid command", commandName));
-            }
-        }
-
-        private void PrintRowCommand(string[] args)
-        {
-            if (!fileSystem.FileExists(args[0]))
-            {
-                console.Writeline(string.Format("There is no '{0}'", args[0]));
-                return;
-            }
-
-            int row;
-            if (!int.TryParse(args[1], out row))
-            {
-                console.Writeline(string.Format("'{0}' is not a valid row", args[1]));
-                return;
-            }
-
-            using (var stream = fileSystem.OpenFile(args[0]))
-            using (var streamReader = new StreamReader(stream))
-            {
-                while (row > 0 && !streamReader.EndOfStream)
-                {
-                    var rowContents = streamReader.ReadLine();
-                    row--;
-                    if (row == 0)
-                    {
-                        console.Writeline(rowContents);
-                        return;
-                    }
-                }
-
-                console.Writeline(string.Format("'{0}' does not contain row {1}", args[0], args[1]));
-            }
-        }
-
-        private void PrintCommand(string[] args)
-        {
-            if (!fileSystem.FileExists(args[0]))
-            {
-                console.Writeline(string.Format("There is no '{0}'", args[0]));
-                return;
-            }
-
-            using (var stream = fileSystem.OpenFile(args[0]))
-            using (var streamReader = new StreamReader(stream))
-            {
-                console.Writeline(streamReader.ReadToEnd());
             }
         }
     }

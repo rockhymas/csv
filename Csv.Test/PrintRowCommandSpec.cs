@@ -25,7 +25,6 @@ namespace Csv.Test
 
                     Given("'file.csv' contains 'row 1 of file.csv\nrow 2 of file.csv'", () => Get<IFileSystem>().Stub(f => f.OpenFile(Arg<string>.Is.Equal("file.csv"))).Return(new MemoryStream(ASCIIEncoding.Default.GetBytes("row 1 of file.csv\nrow 2 of file.csv")))).Verify(() =>
                         Then("output 'row 2 of file.csv'", () => AssertWasCalled<IConsole>(c => c.Writeline(Arg<string>.Is.Equal("row 2 of file.csv")))));
-
                 });
             });
 

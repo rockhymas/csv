@@ -6,7 +6,7 @@ namespace Csv.Test
 {
     public class CsvControllerSpec : Spec<CsvController>
     {
-        public void Main()
+        public void Execute()
         {
             string[] args = null;
 

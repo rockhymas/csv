@@ -6,7 +6,10 @@ namespace Csv
     {
         public override void Execute(string[] args, IFileSystem fileSystem, IConsole console)
         {
-            if (!ValidateFileExists(args[0], fileSystem, console)) return;
+            if (!ValidateFileExists(args[0], fileSystem, console))
+            {
+                return;
+            }
 
             int column;
             if (!int.TryParse(args[1], out column))

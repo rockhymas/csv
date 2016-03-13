@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="CsvControllerSpec.cs" />
     <Compile Include="CsvControllerTests.cs" />
+    <Compile Include="DistinctValuesCommandSpec.cs" />
     <Compile Include="PrintCommandSpec.cs" />
     <Compile Include="PrintCommandTests.cs" />
     <Compile Include="PrintRowCommandSpec.cs" />

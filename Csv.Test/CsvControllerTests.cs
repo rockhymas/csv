@@ -13,7 +13,7 @@ namespace Csv.Test
             // Arrange
             var fileSystem = MockRepository.GenerateStub<IFileSystem>();
             var console = MockRepository.GenerateStub<IConsole>();
-            var unit = new CsvController(fileSystem, console, new Dictionary<string, ICommand>());
+            var unit = new CsvController(console, new Dictionary<string, ICommand>());
 
             // Act
             unit.Execute(new []{ "notacommand", "file.csv" });
@@ -29,13 +29,13 @@ namespace Csv.Test
             var fileSystem = MockRepository.GenerateStub<IFileSystem>();
             var console = MockRepository.GenerateStub<IConsole>();
             var command = MockRepository.GenerateStub<ICommand>();
-            var unit = new CsvController(fileSystem, console, new Dictionary<string, ICommand> { { "command", command } });
+            var unit = new CsvController(console, new Dictionary<string, ICommand> { { "command", command } });
 
             // Act
             unit.Execute(new[] { "command", "arg1" });
 
             // Assert
-            command.AssertWasCalled(c => c.Execute(Arg<string[]>.Is.Equal(new[] { "arg1" }), Arg<IFileSystem>.Is.Equal(fileSystem), Arg<IConsole>.Is.Equal(console)));
+            command.AssertWasCalled(c => c.Execute(Arg<string[]>.Is.Equal(new[] { "arg1" })));
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Csv.Test
         {
             string[] args = null;
 
-            When("executing the sum column command", () => SUT.Execute(args, Get<IFileSystem>(), Get<IConsole>()));
+            When("executing the sum column command", () => SUT.Execute(args));
 
             Given("the file to read is 'file.csv' and the column is 2", () => args = new []{ "file.csv", "2" }).Verify(() =>
             {

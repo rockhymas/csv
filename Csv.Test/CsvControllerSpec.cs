@@ -14,9 +14,9 @@ namespace Csv.Test
             Given("the command to execute is 'notacommand file.csv'", () => args = new[] {"notacommand", "file.csv"}).Verify(() =>
                 Then("output ''notacommand' is not a valid command'", () => AssertWasCalled<IConsole>(c => c.Writeline("'notacommand' is not a valid command"))));
 
-            Given("a command is provided in the constructor", () => SUT = new CsvController(Get<IFileSystem>(), Get<IConsole>(), new Dictionary<string, ICommand> { {"command", Get<ICommand>()}})).Verify(() =>
+            Given("a command is provided in the constructor", () => SUT = new CsvController(Get<IConsole>(), new Dictionary<string, ICommand> { {"command", Get<ICommand>()}})).Verify(() =>
             Given("the command is requested", () => args = new []{ "command", "arg1" }).Verify(() =>
-                Then("the command is executed", () => AssertWasCalled<ICommand>(c => c.Execute(new [] { "arg1" }, Get<IFileSystem>(), Get<IConsole>())))));
+                Then("the command is executed", () => AssertWasCalled<ICommand>(c => c.Execute(new [] { "arg1" })))));
         }
     }
 }

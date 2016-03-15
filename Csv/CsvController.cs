@@ -5,13 +5,11 @@ namespace Csv
 {
     public class CsvController
     {
-        private readonly IFileSystem fileSystem;
         private readonly IConsole console;
-        private Dictionary<string, ICommand> commands;
+        private readonly Dictionary<string, ICommand> commands;
 
-        public CsvController(IFileSystem fileSystem, IConsole console, Dictionary<string, ICommand> commands)
+        public CsvController(IConsole console, Dictionary<string, ICommand> commands)
         {
-            this.fileSystem = fileSystem;
             this.console = console;
             this.commands = commands;
         }
@@ -24,7 +22,7 @@ namespace Csv
             if (commands.ContainsKey(commandName))
             {
                 var command = commands[commandName];
-                command.Execute(commandArgs, fileSystem, console);
+                command.Execute(commandArgs);
             }
             else
             {

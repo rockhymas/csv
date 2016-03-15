@@ -11,7 +11,7 @@ namespace Csv.Test
         {
             string[] args = null;
 
-            When("executing the print command", () => SUT.Execute(args, Get<IFileSystem>(), Get<IConsole>()));
+            When("executing the print command", () => SUT.Execute(args));
             
             Given("the file to print is file.csv", () => args = new []{ "file.csv" }).Verify(() =>
             {

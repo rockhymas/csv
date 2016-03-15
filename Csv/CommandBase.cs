@@ -2,7 +2,7 @@
 {
     public abstract class CommandBase : ICommand
     {
-        public abstract void Execute(string[] args, IFileSystem fileSystem, IConsole console);
+        public abstract void Execute(string[] args);
 
         protected static bool ValidateFileExists(string fileName, IFileSystem fileSystem, IConsole console)
         {

@@ -4,7 +4,16 @@ namespace Csv
 {
     public class PrintCommand : CommandBase
     {
-        public override void Execute(string[] args, IFileSystem fileSystem, IConsole console)
+        private readonly IFileSystem fileSystem;
+        private readonly IConsole console;
+
+        public PrintCommand(IFileSystem fileSystem, IConsole console)
+        {
+            this.fileSystem = fileSystem;
+            this.console = console;
+        }
+
+        public override void Execute(string[] args)
         {
             if (!ValidateFileExists(args[0], fileSystem, console))
             {

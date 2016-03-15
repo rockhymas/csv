@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Globalization;
+using System.IO;
 
 namespace Csv
 {
@@ -26,7 +27,7 @@ namespace Csv
                 while (!streamReader.EndOfStream)
                 {
                     var rowContents = streamReader.ReadLine();
-                    var cells = rowContents.Split(',');
+                    var cells = rowContents == null ? new string[0] : rowContents.Split(',');
                     if (cells.Length >= column)
                     {
                         columnExists = true;
@@ -41,7 +42,7 @@ namespace Csv
 
             if (columnExists)
             {
-                console.Writeline(sum.ToString());
+                console.Writeline(sum.ToString(CultureInfo.InvariantCulture));
             }
             else
             {

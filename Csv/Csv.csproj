@@ -45,6 +45,7 @@
     <Compile Include="CommandBase.cs" />
     <Compile Include="Console.cs" />
     <Compile Include="CsvController.cs" />
+    <Compile Include="DistinctValuesCommand.cs" />
     <Compile Include="FileSystem.cs" />
     <Compile Include="ICommand.cs" />
     <Compile Include="IConsole.cs" />
